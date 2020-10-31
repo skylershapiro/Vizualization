@@ -26,7 +26,8 @@ qplot(long, temp, data=minard.temps, geom="line") +
   scale_x_continuous(limits = c(24, 39)) +
   geom_text_repel(aes(label=paste(day,month)), size= 3,point.padding = .2, min.segment.length = .7, force = 5) +
   theme_fivethirtyeight() + 
-  theme(axis.title = element_text()) + 
+  theme(axis.title = element_text(), axis.text.x = element_blank(), axis.ticks.x = element_blank()) + 
   geom_point(size = 2) +
-  ylab("Latitude") + 
-  xlab("Longitude") 
+  ylab("Temperature (Réaumur scale)") +
+  xlab('') +
+  ggtitle("Tableau Graphique")
