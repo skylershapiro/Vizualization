@@ -1,0 +1,46 @@
+library(dplyr)
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+require(scales)
+
+##### format dataframe
+jb <- jamesbond
+names(jb) <- lapply(jb[1, ], as.character)
+jb <- jb[-1,]
+
+##### wrangle data
+df <- jb %>%
+  select(Movie,Year,US_Gross,World_Gross) %>%
+  gather(key = "variable", value = "value", -Movie, -Year)
+  
+df$value <- as.numeric(df$value)
+df$Year <- as.numeric(as.character(df$Year))
+dodge <- position_dodge(1)
+
+##### scale and label y-axis
+addUnits <- function(n) {
+  labels <- ifelse(n < 1000, n,  # less than thousands
+  ifelse(n < 1e6, paste0(round(n/1e3), 'k'),  # in thousands
+  ifelse(n < 1e9, paste0(round(n/1e6), 'M'),  # in millions
+  ifelse(n < 1e12, paste0(round(n/1e9, digits = 3), 'B'), # in billions
+  ifelse(n < 1e15, paste0(round(n/1e12), 'T'), # in trillions
+'too big!'
+)))))
+return(labels)
+}
+
+##### Visualization - Graph of gross income of James Bond films
+ggplot(df, aes(x = Year, y = value)) + 
+  geom_line(aes(color = variable), size = .4) + 
+  scale_color_manual(labels = c("Domestic Gross Income", "Worldwide Gross Income"),values = c("darkred", "steelblue")) +
+  geom_point(size = 1, position = position_dodge(width = 0.01)) + 
+  geom_line(aes(color = variable)) + 
+  scale_y_continuous(breaks = seq(0,1200000000, 100000000),labels = addUnits) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) + 
+  ylab('Gross Income (USD)') + 
+  ggtitle("Gross Income of James Bond Films")
+  
+  
+##########
