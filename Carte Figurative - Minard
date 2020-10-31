@@ -1,0 +1,32 @@
+library(tidyverse)
+library(dplyr)
+##### Load Data
+minard.troops <- read.csv("~/Downloads/ggplot2-minard-gallery/troops.txt", sep="")
+minard.cities <- read.csv("~/Downloads/ggplot2-minard-gallery/cities.txt", sep="")
+minard.temps <- read.csv("~/Downloads/ggplot2-minard-gallery/temps.txt", sep="")
+minard.temps$date <- as.Date(strptime(minard.temps$date,"%d%b%Y"))
+
+#####Visualization - Napoleon's March
+#main graph
+ggplot(minard.cities, aes(x = long, y = lat)) + 
+  geom_path(aes(size = survivors, colour = direction, group = group), data=minard.troops) + 
+  geom_point() + 
+  geom_text(aes(label = city), hjust=0, vjust=1, size=4) +
+  scale_colour_manual(labels = c("Advance", "Retreat"), values = c("burlywood2","black")) +
+  scale_x_continuous(limits = c(24, 39)) +
+  ggtitle("Carte Figurative") +
+  scale_size(range = c(0.1, 10), breaks = c(10000, 50000, 100000, 200000, 400000), labels = c("10000", "500000", "100000", "200000", "400000")) +
+  theme(axis.title = element_text(),axis.text = element_blank(), axis.ticks = element_blank()) + 
+  ylab("") + 
+  xlab("") +
+  theme(panel.background = element_rect(fill = "white", colour = "black"))
+  
+#temperature graph
+qplot(long, temp, data=minard.temps, geom="line") + 
+  scale_x_continuous(limits = c(24, 39)) +
+  geom_text_repel(aes(label=paste(day,month)), size= 3,point.padding = .2, min.segment.length = .7, force = 5) +
+  theme_fivethirtyeight() + 
+  theme(axis.title = element_text()) + 
+  geom_point(size = 2) +
+  ylab("Latitude") + 
+  xlab("Longitude") 
