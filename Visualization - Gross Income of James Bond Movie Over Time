@@ -41,6 +41,3 @@ ggplot(df, aes(x = Year, y = value)) +
   theme(axis.title = element_text()) + 
   ylab('Gross Income (USD)') + 
   ggtitle("Gross Income of James Bond Films")
-  
-  
-##########
