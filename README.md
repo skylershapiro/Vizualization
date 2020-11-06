@@ -1,4 +1,4 @@
-# MakerPortfolio
+# Data Science Portfolio - Visualization
 
 My Data Science internship and Professional Certificate Program inspired me to dive headlong into the world of data visualization. I was eager to apply my newly acquired skills to model compelling datasets.
 
